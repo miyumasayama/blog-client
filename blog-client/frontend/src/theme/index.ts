@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import type {} from "@mui/x-data-grid/themeAugmentation";
 
 export const theme = createTheme({
   palette: {
@@ -6,5 +7,15 @@ export const theme = createTheme({
       main: "#CDE6C7",
     },
   },
-  components: {},
+  components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          "&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+        },
+      },
+    },
+  },
 });
