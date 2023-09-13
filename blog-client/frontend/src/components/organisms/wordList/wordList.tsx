@@ -6,9 +6,13 @@ export const WordList: FC = () => {
   const { data } = useListWordsQuery();
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "800px" }}>
-        <DataGrid columns={columns} rows={data?.post ?? []} rowSelection pageSizeOptions={[100]} />
-      </div>
+      <DataGrid
+        columns={columns}
+        rows={data?.post ?? []}
+        rowSelection
+        pageSizeOptions={[100]}
+        sx={{ maxWidth: "1000px" }}
+      />
     </div>
   );
 };
