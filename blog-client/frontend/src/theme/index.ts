@@ -6,6 +6,9 @@ export const theme = createTheme({
     primary: {
       main: "#CDE6C7",
     },
+    secondary: {
+      main: "#cdc7e6",
+    },
   },
   components: {
     MuiDataGrid: {

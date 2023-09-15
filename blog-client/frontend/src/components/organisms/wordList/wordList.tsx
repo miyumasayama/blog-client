@@ -1,21 +1,17 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { FC } from "react";
-import { useCreateWordMutation, useListWordsQuery } from "../../../reducers/appApis";
+import { FC, useState } from "react";
+import { useListWordsQuery } from "../../../reducers/appApis";
+import { BasicButton } from "../../atoms/basicButton/basicButton";
+import { CreateWordDialog } from "../createWordDialog/createWordDialog";
 
 export const WordList: FC = () => {
-  const { data, refetch } = useListWordsQuery();
-  const [createWord] = useCreateWordMutation();
-  const handleCreateWord = async () => {
-    const data = await createWord({ title: "言葉", definition: "ひとのことば" });
-    void refetch();
-  };
+  const [isOpen, setIsOpen] = useState(false);
+  const { data } = useListWordsQuery();
   return (
     <Stack gap={2}>
       <Box component='div' display='flex' justifyContent='flex-end'>
-        <Button variant='contained' onClick={() => handleCreateWord()}>
-          create
-        </Button>
+        <BasicButton variant='contained' onClick={() => setIsOpen(true)} title='ADD' />
       </Box>
       <Box component='div' display='flex' justifyContent='center' width='100%'>
         <DataGrid
@@ -23,9 +19,10 @@ export const WordList: FC = () => {
           rows={data ?? []}
           rowSelection
           pageSizeOptions={[100]}
-          sx={{ maxWidth: "1000px", height: "90%" }}
+          sx={{ maxWidth: "1000px", height: "700px" }}
         />
       </Box>
+      <CreateWordDialog open={isOpen} handleClose={() => setIsOpen(false)} />
     </Stack>
   );
 };

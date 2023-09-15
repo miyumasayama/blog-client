@@ -1,4 +1,4 @@
-import { baseApi } from "../baseApi";
+import { WordTags, baseApi } from "../baseApi";
 
 type Word = {
   id: number;
@@ -23,6 +23,7 @@ export const wordsApi = baseApi.injectEndpoints({
         url: "words",
         method: "GET",
       }),
+      providesTags: [WordTags.ListWord],
     }),
     createWord: builder.mutation<CreateWordResponse, CreateWordParams>({
       query: (params) => ({
@@ -33,6 +34,7 @@ export const wordsApi = baseApi.injectEndpoints({
           definition: params.definition,
         },
       }),
+      invalidatesTags: [WordTags.ListWord],
     }),
   }),
 });
