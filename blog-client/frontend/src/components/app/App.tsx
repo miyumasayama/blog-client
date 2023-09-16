@@ -2,6 +2,8 @@ import { FC } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Blogs as BlogIndex } from "../pages/blogs";
 import { Home } from "../pages/home";
+import { Login } from "../pages/login";
+import { SignUp } from "../pages/signUp";
 import { Words as WordIndex } from "../pages/words";
 import { Words } from "./fragments/words";
 
@@ -10,6 +12,8 @@ export const App: FC = () => {
     <Router>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
         <Route path='/blogs' element={<BlogIndex />}>
           <Route index element={<BlogIndex />} />
         </Route>
