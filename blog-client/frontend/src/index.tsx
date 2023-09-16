@@ -2,10 +2,10 @@ import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { store } from "./app/store";
 import { App } from "./components/app/App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { store } from "./store";
 import { theme } from "./theme";
 
 const container = document.getElementById("root")!;
