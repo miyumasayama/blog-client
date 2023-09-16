@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { baseApi } from "../reducers/appApis/baseApi";
+import { WordReducer } from "../reducers/word";
 
 export const store = configureStore({
   reducer: {
+    Word: WordReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

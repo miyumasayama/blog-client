@@ -7,7 +7,16 @@ type Word = {
   example?: string;
 };
 
-type ListWordsResponse = Word[];
+type ListWordsResponse = {
+  data: Word[];
+  total: number;
+  last_page: number;
+};
+
+type ListWordsParams = {
+  page: number;
+  per_page: number;
+};
 
 type CreateWordResponse = Word;
 
@@ -18,10 +27,14 @@ type CreateWordParams = {
 
 export const wordsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    listWords: builder.query<ListWordsResponse, void>({
-      query: () => ({
+    listWords: builder.query<ListWordsResponse, ListWordsParams>({
+      query: (params) => ({
         url: "words",
         method: "GET",
+        params: {
+          page: params.page,
+          per_page: params.per_page,
+        },
       }),
       providesTags: [WordTags.ListWord],
     }),

@@ -1,34 +1,62 @@
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC, useState } from "react";
 import { useListWordsQuery } from "../../../reducers/appApis";
+import { setWordPage } from "../../../reducers/word";
+import { selectWord } from "../../../reducers/word/selector";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { perPageItem } from "../../../utils/word";
 import { BasicButton } from "../../atoms/basicButton/basicButton";
+import { Pagination } from "../../atoms/pagination/pagination";
+import { NoResult } from "../../molecules/noResult/noResult";
 import { CreateWordDialog } from "../createWordDialog/createWordDialog";
 
 export const WordList: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data } = useListWordsQuery();
+  const { page } = useAppSelector(selectWord);
+  const dispatch = useAppDispatch();
+  const { data, isLoading } = useListWordsQuery({ page: page, per_page: perPageItem });
+  const handleChangePage = (page: number) => {
+    dispatch(setWordPage(page));
+  };
   return (
     <Stack gap={2}>
       <Box component='div' display='flex' justifyContent='flex-end'>
         <BasicButton variant='contained' onClick={() => setIsOpen(true)} title='ADD' />
       </Box>
-      <Box component='div' display='flex' justifyContent='center' width='100%'>
-        <DataGrid
-          columns={columns}
-          rows={data ?? []}
-          rowSelection
-          pageSizeOptions={[100]}
-          sx={{ maxWidth: "1000px", height: "700px" }}
-        />
-      </Box>
+      <Stack justifyContent='center' alignItems='center' gap={2} width='100%' height='100%'>
+        {isLoading ? (
+          <CircularProgress color='tertiary' />
+        ) : (
+          <>
+            {data?.total === 0 ? (
+              <Box component='div' my={4}>
+                <NoResult />
+              </Box>
+            ) : (
+              <>
+                <Box component='div' width='100%' sx={{ maxWidth: "1000px" }}>
+                  <DataGrid
+                    columns={columns}
+                    rows={data?.data ?? []}
+                    rowSelection
+                    hideFooter={true}
+                    pageSizeOptions={[100]}
+                    sx={{ height: "700px" }}
+                  />
+                </Box>
+                <Pagination page={page} maxPage={data?.last_page ?? 0} handleChange={handleChangePage} />
+              </>
+            )}
+          </>
+        )}
+      </Stack>
       <CreateWordDialog open={isOpen} handleClose={() => setIsOpen(false)} />
     </Stack>
   );
 };
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", sortable: true, flex: 1 },
   { field: "title", headerName: "word", sortable: true, flex: 2 },
   { field: "definition", headerName: "definition", sortable: true, flex: 3 },
 ];
