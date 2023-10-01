@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
+import { useLoginMutation } from "../../reducers/appApis";
 import { BasicButton } from "../atoms/basicButton/basicButton";
 import { AuthWrapper } from "../molecules/authWrapper/authWrapper";
 
@@ -20,6 +21,7 @@ type FormData = {
 
 export const Login: FC = () => {
   const navigate = useNavigate();
+  const [login] = useLoginMutation();
   const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -29,6 +31,8 @@ export const Login: FC = () => {
   });
   const handleLogin = async (data: FormData) => {
     try {
+      const res = await login({ email: data.email, password: data.password });
+      console.log(res);
       navigate("/");
     } catch (e) {
       console.log(e);
