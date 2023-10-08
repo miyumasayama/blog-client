@@ -50,7 +50,7 @@ export const CreateWordDialog: FC<Props> = ({ open, handleClose }) => {
   return (
     <Dialog open={open} fullWidth>
       <DialogTitle>Add a word</DialogTitle>
-      <form onSubmit={handleSubmit(handleSubmitData)}>
+      <form onSubmit={handleSubmit(handleSubmitData)} noValidate>
         <DialogContent>
           <Stack gap={2}>
             <Controller
