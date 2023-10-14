@@ -35,6 +35,7 @@ export const Login: FC = () => {
   const handleLogin = async (data: FormData) => {
     try {
       const res = await login({ email: data.email, password: data.password }).unwrap();
+      console.log(res);
       if (res.token) {
         dispatch(setToken(res.token));
         navigate("/");
