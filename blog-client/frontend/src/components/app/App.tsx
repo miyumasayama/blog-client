@@ -4,20 +4,23 @@ import { Blogs as BlogIndex } from "../pages/blogs";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 import { Words as WordIndex } from "../pages/words";
+import { Secured } from "./fragments/secured";
 import { Words } from "./fragments/words";
 
 export const App: FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Login />} />
-        <Route path='/blogs' element={<BlogIndex />}>
-          <Route index element={<BlogIndex />} />
-        </Route>
-        <Route path='/words' element={<Words />}>
-          <Route index element={<WordIndex />} />
+        <Route path='/' element={<Secured />}>
+          <Route index element={<Home />} />
+          <Route path='/blogs' element={<BlogIndex />}>
+            <Route index element={<BlogIndex />} />
+          </Route>
+          <Route path='/words' element={<Words />}>
+            <Route index element={<WordIndex />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

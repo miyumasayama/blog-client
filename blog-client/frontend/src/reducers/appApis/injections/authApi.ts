@@ -1,11 +1,15 @@
-import { components } from "../../../types/api";
+import { paths } from "../../../types/api";
 import { baseApi } from "../baseApi";
 
-type LoginParams = components["schemas"]["authorizationRequestBody"];
+type LoginParams = paths["/api/login"]["post"]["requestBody"]["content"]["application/json"];
 
-type LoginResponse = components["schemas"]["tokenResponse"];
+type LoginResponse = paths["/api/login"]["post"]["responses"]["200"]["content"]["application/json"];
 
-type RegisterParams = components["schemas"]["authorizationRequestBody"];
+type LogoutParams = paths["/api/logout"]["delete"]["requestBody"]["content"]["application/json"];
+
+type LogoutResponse = paths["/api/logout"]["delete"]["responses"]["200"]["content"]["application/json"];
+
+type RegisterParams = paths["/api/register"]["post"]["requestBody"]["content"]["application/json"];
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,6 +20,15 @@ export const authApi = baseApi.injectEndpoints({
         body: {
           email: params.email,
           password: params.password,
+        },
+      }),
+    }),
+    logout: builder.mutation<LogoutResponse, LogoutParams>({
+      query: (params) => ({
+        url: "logout",
+        method: "DELETE",
+        body: {
+          // userId: params.userId,
         },
       }),
     }),
@@ -32,4 +45,4 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation } = authApi;
