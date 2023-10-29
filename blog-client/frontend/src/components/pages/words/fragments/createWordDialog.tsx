@@ -3,9 +3,9 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextFiel
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { object, string } from "yup";
-import { useCreateWordMutation } from "../../../reducers/appApis";
-import { BasicButton } from "../../atoms/basicButton/basicButton";
-import { CancelButton } from "../../atoms/cancelButton/cancelButton";
+import { useCreateWordMutation } from "../../../../reducers/appApis";
+import { BasicButton } from "../../../atoms/basicButton/basicButton";
+import { CancelButton } from "../../../atoms/cancelButton/cancelButton";
 
 type Props = {
   open: boolean;

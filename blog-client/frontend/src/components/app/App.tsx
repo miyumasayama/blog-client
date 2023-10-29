@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Blogs as BlogIndex } from "../pages/blogs";
-import { Home } from "../pages/home";
-import { Login } from "../pages/login";
-import { Words as WordIndex } from "../pages/words";
+import { Blogs as BlogIndex } from "../pages/blogs/blogs";
+import { Home } from "../pages/home/home";
+import { Login } from "../pages/login/login";
+import { Words as WordIndex } from "../pages/words/words";
 import { Secured } from "./fragments/secured";
 import { Words } from "./fragments/words";
 

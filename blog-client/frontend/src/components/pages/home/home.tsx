@@ -2,8 +2,8 @@ import { AbcRounded, CreateRounded, ImportContactsRounded, LibraryBooksRounded }
 import { Avatar, List, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { BasicBox } from "../molecules/basicBox/basicBox";
-import { AppBar } from "../organisms/appBar/appBar";
+import { BasicBox } from "../../molecules/basicBox/basicBox";
+import { AppBar } from "../../organisms/appBar/appBar";
 
 export const Home: FC = () => {
   const navigate = useNavigate();
