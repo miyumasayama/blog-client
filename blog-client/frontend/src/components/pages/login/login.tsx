@@ -4,11 +4,11 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
-import { useLoginMutation } from "../../reducers/appApis";
-import { setToken } from "../../reducers/auth";
-import { useAppDispatch } from "../../store";
-import { BasicButton } from "../atoms/basicButton/basicButton";
-import { AuthWrapper } from "../molecules/authWrapper/authWrapper";
+import { useLoginMutation } from "../../../reducers/appApis";
+import { setToken } from "../../../reducers/auth";
+import { useAppDispatch } from "../../../store";
+import { BasicButton } from "../../atoms/basicButton/basicButton";
+import { AuthWrapper } from "../../molecules/authWrapper/authWrapper";
 
 export const schema = object({
   email: string().required("メールアドレスを入力してください。"),

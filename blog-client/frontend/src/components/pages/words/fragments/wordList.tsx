@@ -1,15 +1,15 @@
 import { Box, CircularProgress, Stack } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC, useState } from "react";
-import { useListWordsQuery } from "../../../reducers/appApis";
-import { setWordPage } from "../../../reducers/word";
-import { selectWord } from "../../../reducers/word/selector";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { perPageItem } from "../../../utils/word";
-import { BasicButton } from "../../atoms/basicButton/basicButton";
-import { Pagination } from "../../atoms/pagination/pagination";
-import { NoResult } from "../../molecules/noResult/noResult";
-import { CreateWordDialog } from "../createWordDialog/createWordDialog";
+import { useListWordsQuery } from "../../../../reducers/appApis";
+import { setWordPage } from "../../../../reducers/word";
+import { selectWord } from "../../../../reducers/word/selector";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { perPageItem } from "../../../../utils/word";
+import { BasicButton } from "../../../atoms/basicButton/basicButton";
+import { Pagination } from "../../../atoms/pagination/pagination";
+import { NoResult } from "../../../molecules/noResult/noResult";
+import { CreateWordDialog } from "./createWordDialog";
 
 export const WordList: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
