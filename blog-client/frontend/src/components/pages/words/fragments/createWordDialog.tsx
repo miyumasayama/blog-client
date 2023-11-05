@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { object, string } from "yup";
 import { useCreateWordMutation } from "../../../../reducers/appApis";
@@ -27,7 +27,7 @@ const schema = object({
 export const CreateWordDialog: FC<Props> = ({ open, handleClose, selectedWord }) => {
   const [createWord] = useCreateWordMutation();
 
-  const { control, handleSubmit, watch } = useForm<FormData>({
+  const { control, handleSubmit, watch, setValue } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       title: selectedWord?.title,
@@ -49,6 +49,11 @@ export const CreateWordDialog: FC<Props> = ({ open, handleClose, selectedWord })
     }
     handleClose();
   };
+
+  useEffect(() => {
+    setValue("title", selectedWord?.title ?? "");
+    setValue("definition", selectedWord?.definition ?? "");
+  }, [selectedWord, setValue]);
 
   return (
     <Dialog open={open} fullWidth>

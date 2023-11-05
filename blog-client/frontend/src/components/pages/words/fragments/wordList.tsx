@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack } from "@mui/material";
+import { Box, Button, CircularProgress, Stack } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC, useState } from "react";
 import { useListWordsQuery } from "../../../../reducers/appApis";
@@ -22,6 +22,30 @@ export const WordList: FC = () => {
   const handleChangePage = (page: number) => {
     dispatch(setWordPage(page));
   };
+
+  const columns: GridColDef[] = [
+    { field: "title", headerName: "word", disableColumnMenu: true, sortable: true, flex: 2 },
+    { field: "definition", headerName: "definition", disableColumnMenu: true, sortable: true, flex: 3 },
+    {
+      field: "editBtn",
+      headerName: "",
+      sortable: false,
+      width: 120,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => {
+            setSelectedWord(params.row);
+            setIsOpen(true);
+          }}
+        >
+          編集
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <Stack gap={2}>
@@ -66,8 +90,3 @@ export const WordList: FC = () => {
     </Stack>
   );
 };
-
-const columns: GridColDef[] = [
-  { field: "title", headerName: "word", sortable: true, flex: 2 },
-  { field: "definition", headerName: "definition", sortable: true, flex: 3 },
-];
