@@ -106,7 +106,7 @@ export interface paths {
         /** @description 単語一覧成功時 */
         200: {
           content: {
-            "application/json": components["schemas"]["wordResponse"][];
+            "application/json": components["schemas"]["words"];
           };
         };
         /** @description validation error */
@@ -132,7 +132,41 @@ export interface paths {
         /** @description 単語作成時 */
         201: {
           content: {
-            "application/json": components["schemas"]["wordResponse"];
+            "application/json": components["schemas"]["word"];
+          };
+        };
+        /** @description validation error */
+        422: {
+          content: {
+            "application/json": components["schemas"]["HTTPValidationError"];
+          };
+        };
+      };
+    };
+  };
+  "/api/words/{id}": {
+    /**
+     * Word編集のAPI
+     * @description word編集のAPIドキュメント
+     */
+    put: {
+      parameters: {
+        path: {
+          /** @description id */
+          id: number;
+        };
+      };
+      /** @description word編集のリクエストボディ */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["word"];
+        };
+      };
+      responses: {
+        /** @description 単語修正時 */
+        201: {
+          content: {
+            "application/json": components["schemas"]["word"];
           };
         };
         /** @description validation error */
@@ -160,12 +194,19 @@ export interface components {
     logoutRequestBody: {
       userId?: number;
     };
-    wordResponse: {
+    word: {
       id: number;
       /** @description 単語の名前 */
       title: string;
       /** @description 単語の意味 */
       definition: string;
+    };
+    /** words */
+    words: {
+      data?: components["schemas"]["word"][];
+      per_page?: number;
+      total?: number;
+      last_page?: number;
     };
     createWordRequestBody: {
       /** @description 単語の名前 */
