@@ -1,7 +1,6 @@
 import { Box, CircularProgress, Stack } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC, useState } from "react";
-import { object, string } from "yup";
 import { useListWordsQuery } from "../../../../reducers/appApis";
 import { setWordPage } from "../../../../reducers/word";
 import { selectWord } from "../../../../reducers/word/selector";
@@ -12,16 +11,6 @@ import { BasicButton } from "../../../atoms/basicButton/basicButton";
 import { Pagination } from "../../../atoms/pagination/pagination";
 import { NoResult } from "../../../molecules/noResult/noResult";
 import { CreateWordDialog } from "./createWordDialog";
-
-type FormData = {
-  title: string;
-  definition: string;
-};
-
-const schema = object({
-  title: string().required("入力"),
-  definition: string().required("入浴"),
-});
 
 export const WordList: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
