@@ -34,17 +34,18 @@ export const wordsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [WordTags.ListWord],
     }),
-    updateWord: builder.mutation<UpdateWordResponse, { id: number; body: UpdateWordParams }>({
+    updateWord: builder.mutation<UpdateWordResponse, UpdateWordParams>({
       query: (params) => ({
         url: `words/${params.id}`,
         method: "PUT",
         body: {
-          title: params.body.title,
-          definition: params.body.definition,
+          title: params.title,
+          definition: params.definition,
         },
       }),
+      invalidatesTags: [WordTags.ListWord],
     }),
   }),
 });
 
-export const { useListWordsQuery, useCreateWordMutation } = wordsApi;
+export const { useListWordsQuery, useCreateWordMutation, useUpdateWordMutation } = wordsApi;

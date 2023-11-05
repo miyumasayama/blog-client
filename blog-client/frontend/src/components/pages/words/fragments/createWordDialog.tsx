@@ -3,7 +3,7 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextFiel
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { object, string } from "yup";
-import { useCreateWordMutation } from "../../../../reducers/appApis";
+import { useCreateWordMutation, useUpdateWordMutation } from "../../../../reducers/appApis";
 import { Word } from "../../../../types/word";
 import { BasicButton } from "../../../atoms/basicButton/basicButton";
 import { CancelButton } from "../../../atoms/cancelButton/cancelButton";
@@ -26,6 +26,7 @@ const schema = object({
 
 export const CreateWordDialog: FC<Props> = ({ open, handleClose, selectedWord }) => {
   const [createWord] = useCreateWordMutation();
+  const [updateWord] = useUpdateWordMutation();
 
   const { control, handleSubmit, watch, setValue } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -40,9 +41,14 @@ export const CreateWordDialog: FC<Props> = ({ open, handleClose, selectedWord })
   const handleSubmitData = async (data: FormData) => {
     const { title, definition } = data;
     try {
+      let res;
       if (selectedWord?.id.toString()) {
+        res = await updateWord({ id: selectedWord.id, title, definition }).unwrap();
       } else {
-        await createWord({ title, definition });
+        res = await createWord({ title, definition }).unwrap();
+      }
+      if (res) {
+        handleClose();
       }
     } catch (e) {
       console.log(e);
