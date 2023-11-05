@@ -4,8 +4,9 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
 import { object, ref, string } from "yup";
-import { BasicButton } from "../atoms/basicButton/basicButton";
-import { AuthWrapper } from "../molecules/authWrapper/authWrapper";
+import { useRegisterMutation } from "../../../reducers/appApis";
+import { BasicButton } from "../../atoms/basicButton/basicButton";
+import { AuthWrapper } from "../../molecules/authWrapper/authWrapper";
 
 export const schema = object({
   email: string()
@@ -24,12 +25,19 @@ type FormData = {
 };
 
 export const SignUp: FC = () => {
-  const { control } = useForm<FormData>({
+  const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+  const [register] = useRegisterMutation();
+
+  const handleCreate = async (data: FormData) => {
+    try {
+      await register({ email: data.email, password: data.password });
+    } catch (e) {}
+  };
   return (
     <AuthWrapper>
-      <Stack gap={3} component='form'>
+      <Stack gap={3} component='form' onSubmit={handleSubmit(handleCreate)}>
         <Typography variant='h4' color='gray'>
           Sign Up
         </Typography>

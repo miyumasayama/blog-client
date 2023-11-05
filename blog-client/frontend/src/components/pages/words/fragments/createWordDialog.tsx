@@ -1,15 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { object, string } from "yup";
-import { useCreateWordMutation } from "../../../../reducers/appApis";
+import { useCreateWordMutation, useUpdateWordMutation } from "../../../../reducers/appApis";
+import { Word } from "../../../../types/word";
 import { BasicButton } from "../../../atoms/basicButton/basicButton";
 import { CancelButton } from "../../../atoms/cancelButton/cancelButton";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
+  selectedWord?: Word;
 };
 
 type FormData = {
@@ -19,37 +21,49 @@ type FormData = {
 
 const schema = object({
   title: string().required("入力"),
-  definition: string().required("入浴"),
+  definition: string().required("入力"),
 });
 
-export const CreateWordDialog: FC<Props> = ({ open, handleClose }) => {
+export const CreateWordDialog: FC<Props> = ({ open, handleClose, selectedWord }) => {
   const [createWord] = useCreateWordMutation();
+  const [updateWord] = useUpdateWordMutation();
 
-  const { control, handleSubmit, watch } = useForm<FormData>({
+  const { control, handleSubmit, watch, setValue } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      title: "",
-      definition: "",
+      title: selectedWord?.title,
+      definition: selectedWord?.definition,
     },
   });
 
   const [title, definition] = watch(["title", "definition"]);
-  console.log(title, definition);
 
   const handleSubmitData = async (data: FormData) => {
-    console.log(data);
     const { title, definition } = data;
     try {
-      await createWord({ title, definition });
+      let res;
+      if (selectedWord?.id.toString()) {
+        res = await updateWord({ id: selectedWord.id, title, definition }).unwrap();
+      } else {
+        res = await createWord({ title, definition }).unwrap();
+      }
+      if (res) {
+        handleClose();
+      }
     } catch (e) {
       console.log(e);
     }
     handleClose();
   };
 
+  useEffect(() => {
+    setValue("title", selectedWord?.title ?? "");
+    setValue("definition", selectedWord?.definition ?? "");
+  }, [selectedWord, setValue]);
+
   return (
     <Dialog open={open} fullWidth>
-      <DialogTitle>Add a word</DialogTitle>
+      <DialogTitle>{selectedWord ? "Edit a word" : "Add a word"}</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitData)} noValidate>
         <DialogContent>
           <Stack gap={2}>
@@ -72,7 +86,7 @@ export const CreateWordDialog: FC<Props> = ({ open, handleClose }) => {
         <DialogActions sx={{ px: "24px", py: "20px" }}>
           <Box component='div' display='flex' justifyContent='flex-end' width='100%' gap={2}>
             <CancelButton onClick={handleClose} />
-            <BasicButton type='submit' title='OK' />
+            <BasicButton type='submit' title='OK' disabled={!title || !definition} />
           </Box>
         </DialogActions>
       </form>

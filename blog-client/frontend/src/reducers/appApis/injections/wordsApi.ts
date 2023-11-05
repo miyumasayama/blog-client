@@ -1,29 +1,14 @@
+import { paths } from "../../../types/api";
 import { WordTags, baseApi } from "../baseApi";
 
-type Word = {
-  id: number;
-  title: string;
-  definition: string;
-  example?: string;
-};
+type ListWordsResponse = paths["/api/words"]["get"]["responses"]["200"]["content"]["application/json"];
+type ListWordsParams = paths["/api/words"]["get"]["parameters"]["query"];
 
-type ListWordsResponse = {
-  data: Word[];
-  total: number;
-  last_page: number;
-};
+type CreateWordResponse = paths["/api/words"]["post"]["responses"]["201"]["content"]["application/json"];
+type CreateWordParams = paths["/api/words"]["post"]["requestBody"]["content"]["application/json"];
 
-type ListWordsParams = {
-  page: number;
-  per_page: number;
-};
-
-type CreateWordResponse = Word;
-
-type CreateWordParams = {
-  title: string;
-  definition: string;
-};
+type UpdateWordResponse = paths["/api/words/{id}"]["put"]["responses"]["201"]["content"]["application/json"];
+type UpdateWordParams = paths["/api/words/{id}"]["put"]["requestBody"]["content"]["application/json"];
 
 export const wordsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,8 +17,8 @@ export const wordsApi = baseApi.injectEndpoints({
         url: "words",
         method: "GET",
         params: {
-          page: params.page,
-          per_page: params.per_page,
+          offset: params?.offset,
+          per_page: params?.per_page,
         },
       }),
       providesTags: [WordTags.ListWord],
@@ -49,7 +34,18 @@ export const wordsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [WordTags.ListWord],
     }),
+    updateWord: builder.mutation<UpdateWordResponse, UpdateWordParams>({
+      query: (params) => ({
+        url: `words/${params.id}`,
+        method: "PUT",
+        body: {
+          title: params.title,
+          definition: params.definition,
+        },
+      }),
+      invalidatesTags: [WordTags.ListWord],
+    }),
   }),
 });
 
-export const { useListWordsQuery, useCreateWordMutation } = wordsApi;
+export const { useListWordsQuery, useCreateWordMutation, useUpdateWordMutation } = wordsApi;
