@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
 import { object, ref, string } from "yup";
-import { useRegisterMutation } from "../../../reducers/appApis";
+import { useAuth } from "../../../hooks/useAuth";
 import { BasicButton } from "../../atoms/basicButton/basicButton";
 import { AuthWrapper } from "../../molecules/authWrapper/authWrapper";
 
@@ -28,12 +28,10 @@ export const SignUp: FC = () => {
   const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const [register] = useRegisterMutation();
+  const { register } = useAuth();
 
-  const handleCreate = async (data: FormData) => {
-    try {
-      await register({ email: data.email, password: data.password });
-    } catch (e) {}
+  const handleCreate = (data: FormData) => {
+    void register(data);
   };
   return (
     <AuthWrapper>

@@ -2,11 +2,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, Stack, TextField, Typography } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { object, string } from "yup";
-import { useLoginMutation } from "../../../reducers/appApis";
-import { setToken } from "../../../reducers/auth";
-import { useAppDispatch } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { BasicButton } from "../../atoms/basicButton/basicButton";
 import { AuthWrapper } from "../../molecules/authWrapper/authWrapper";
 
@@ -22,9 +20,7 @@ type FormData = {
 };
 
 export const Login: FC = () => {
-  const navigate = useNavigate();
-  const [login] = useLoginMutation();
-  const dispatch = useAppDispatch();
+  const { login } = useAuth();
   const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -33,15 +29,7 @@ export const Login: FC = () => {
     },
   });
   const handleLogin = async (data: FormData) => {
-    try {
-      const res = await login({ email: data.email, password: data.password }).unwrap();
-      if (res.token) {
-        dispatch(setToken(res.token));
-        navigate("/");
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    void login(data);
   };
   return (
     <AuthWrapper>

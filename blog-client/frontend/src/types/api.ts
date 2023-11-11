@@ -194,6 +194,10 @@ export interface components {
     logoutRequestBody: {
       userId?: number;
     };
+    auth: {
+      email: string;
+      password: string;
+    };
     word: {
       id: number;
       /** @description 単語の名前 */

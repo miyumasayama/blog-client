@@ -11,6 +11,8 @@ type LogoutResponse = paths["/api/logout"]["delete"]["responses"]["200"]["conten
 
 type RegisterParams = paths["/api/register"]["post"]["requestBody"]["content"]["application/json"];
 
+type RegisterResponse = paths["/api/register"]["post"]["responses"]["200"]["content"]["application/json"];
+
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginParams>({
@@ -32,7 +34,7 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    register: builder.mutation<any, RegisterParams>({
+    register: builder.mutation<RegisterResponse, RegisterParams>({
       query: (params) => ({
         url: "register",
         method: "POST",
