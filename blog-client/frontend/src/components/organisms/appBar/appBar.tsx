@@ -10,7 +10,7 @@ export const AppBar: FC = () => {
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const handleLogout = async () => {
-    const res = await logout({ userId: 2 });
+    const res = await logout();
     dispatch(removeToken());
     console.log(res);
   };
